@@ -71,7 +71,7 @@ class ThemeColors {
 
   /// Акценты
   /// основной цвет бренда
-  Color get brand => const Color(0xff1E6FFE);
+  Color get brand => const Color(0xFFABD9D6);
 
   Color get onBrandText => baseColors.white;
 
@@ -174,11 +174,11 @@ class BaseStyle {
   ThemeColors get themeColors => ThemeColors();
 
   InputDecoration get dropDownListDecoration => InputDecoration(
-    isDense: true,
-    contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
-    filled: true,
-    fillColor: themeColors.cardSecondaryColor,
-  );
+        isDense: true,
+        contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+        filled: true,
+        fillColor: themeColors.cardSecondaryColor,
+      );
 
   Decoration get backgroundDecoration => BoxDecoration(
       gradient: LinearGradient(
@@ -336,80 +336,56 @@ class BaseStyle {
       borderRadius: BorderRadius.circular(10));
 
   ThemeData get datePickerThemeData => mainTheme.copyWith(
-      textTheme: mainTheme.textTheme.copyWith(
+          textTheme: mainTheme.textTheme.copyWith(
         labelSmall: const TextStyle(
-            height: 1, fontFamily: "Steppe", fontSize: 11, letterSpacing: 0.8),
-      )
-  );
-
-  MaterialColor get swatch => Colors.blue;
+            height: 1, fontFamily: "Inter", fontSize: 11, letterSpacing: 0.8),
+      ));
 
   TextTheme get mainTextTheme => TextTheme(
-    displayLarge: const TextStyle(
-      fontFamily: "Steppe",
-      height: 1.5,
-      fontSize: 70,
-      letterSpacing: 3,
-    ),
-    displayMedium: const TextStyle(
-      fontFamily: "Steppe",
-      height: 1.5,
-      fontSize: 63,
-      letterSpacing: -0.5,
-    ),
-    displaySmall: const TextStyle(fontFamily: "Steppe"),
-    headlineMedium: const TextStyle(
-      fontFamily: "Steppe",
-      height: 1.5,
-      fontSize: 28,
-      letterSpacing: 1,
-    ),
-    headlineSmall: const TextStyle(
-        fontFamily: "Steppe", height: 1.5, fontSize: 20, letterSpacing: 1),
-    titleLarge: const TextStyle(
-      fontFamily: "Steppe",
-      height: 1.5,
-      fontSize: 18,
-      letterSpacing: 1,
-    ),
-    titleMedium: const TextStyle(
-        height: 1.2, fontFamily: "Steppe", fontSize: 18, letterSpacing: 0),
-    titleSmall: const TextStyle(
-        height: 1.2, fontFamily: "Steppe", fontSize: 17, letterSpacing: 0),
-    bodyLarge: const TextStyle(
-        height: 1.2, fontFamily: "Steppe", fontSize: 15, letterSpacing: 0),
-    bodyMedium: const TextStyle(
-        height: 1.2,
-        fontFamily: "Steppe",
-        fontSize: 15,
-        letterSpacing: 0.3),
-    labelLarge: const TextStyle(
-        fontFamily: "Steppe", height: 1.5, fontSize: 14, letterSpacing: 1),
-    bodySmall: TextStyle(
-        height: 1.2,
-        fontFamily: "Steppe",
-        fontSize: 13,
-        letterSpacing: 0.5,
-        color: themeColors.caption),
-    labelSmall: const TextStyle(
-        height: 1.2, fontFamily: "Steppe", fontSize: 13, letterSpacing: 1),
-  );
+        displayLarge: const TextStyle(
+          fontFamily: "Inter",
+          fontSize: 70,
+        ),
+        displayMedium: const TextStyle(
+          fontFamily: "Inter",
+          fontSize: 63,
+        ),
+        displaySmall: const TextStyle(fontFamily: "Inter"),
+        headlineMedium: const TextStyle(
+          fontFamily: "Inter",
+          fontSize: 28,
+        ),
+        headlineSmall: const TextStyle(
+            fontFamily: "Inter", height: 1.5, fontSize: 20, letterSpacing: 1),
+        titleLarge: const TextStyle(
+          fontFamily: "Inter",
+          fontSize: 18,
+        ),
+        titleMedium: const TextStyle(fontFamily: "Inter", fontSize: 18),
+        titleSmall: const TextStyle(fontFamily: "Inter", fontSize: 17),
+        bodyLarge: const TextStyle(fontFamily: "Inter", fontSize: 15),
+        bodyMedium: const TextStyle(
+          fontFamily: "Inter",
+          fontSize: 15,
+        ),
+        labelLarge: const TextStyle(fontFamily: "Inter", fontSize: 14),
+        bodySmall: TextStyle(
+            fontFamily: "Inter", fontSize: 13, color: themeColors.caption),
+        labelSmall: const TextStyle(fontFamily: "Inter", fontSize: 13),
+      );
+
+  MaterialColor get swatch => Colors.blue;
 
   ThemeData get mainTheme => ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSwatch(
-          brightness: Brightness.light, primarySwatch: swatch)
+              brightness: Brightness.light, primarySwatch: swatch)
           .copyWith(secondary: themeColors.cardSecondaryColor),
       backgroundColor: themeColors.background,
       scaffoldBackgroundColor: Colors.transparent,
       primaryColor: themeColors.brand,
       primaryColorDark: themeColors.brandDarker,
       canvasColor: themeColors.translucent,
-/*      textSelectionTheme: TextSelectionThemeData(
-        cursorColor: themeColors.brand,
-        selectionColor: Colors.white24,
-        selectionHandleColor: Colors.amber.shade800,
-      ),*/
       dialogBackgroundColor: themeColors.lightBackground,
       cardColor: themeColors.cardColor,
       toggleButtonsTheme: ToggleButtonsThemeData(
@@ -418,6 +394,12 @@ class BaseStyle {
         selectedBorderColor: themeColors.brandedText,
         selectedColor: themeColors.brand,
         borderColor: themeColors.textSecondary,
+      ),
+      tabBarTheme: TabBarTheme(
+        overlayColor: MaterialStateProperty.resolveWith((states) {
+          return themeColors.translucent;
+        }),
+        labelPadding: EdgeInsets.zero,
       ),
       iconTheme: IconThemeData(
         color: themeColors.text,
@@ -430,6 +412,10 @@ class BaseStyle {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(mainRadius)),
       ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: themeColors.brand,
+          unselectedItemColor: baseColors.black,
+          selectedItemColor: themeColors.onBrandText),
 
       ///Разделитель
       dividerTheme: DividerThemeData(
@@ -455,7 +441,7 @@ class BaseStyle {
         filled: true,
         fillColor: themeColors.cardSecondaryColor,
         hintStyle:
-        mainTextTheme.titleSmall?.copyWith(color: themeColors.caption),
+            mainTextTheme.titleSmall?.copyWith(color: themeColors.caption),
         labelStyle: mainTextTheme.bodyLarge,
         suffixStyle: mainTextTheme.titleSmall,
         disabledBorder: OutlineInputBorder(
@@ -477,12 +463,12 @@ class BaseStyle {
 
       /// AppBar
       appBarTheme: AppBarTheme(
-        foregroundColor: themeColors.text,
-        backgroundColor: Colors.transparent,
+        foregroundColor: themeColors.onBrandText,
+        backgroundColor: themeColors.brand,
         actionsIconTheme: IconThemeData(color: themeColors.text),
         iconTheme: IconThemeData(color: themeColors.text),
         titleTextStyle:
-        mainTextTheme.titleLarge?.copyWith(color: themeColors.text),
+            mainTextTheme.titleLarge?.copyWith(color: themeColors.text),
       ),
       checkboxTheme: CheckboxThemeData(
         fillColor: MaterialStateProperty.all(themeColors.brand),
@@ -498,48 +484,48 @@ class BaseStyle {
       buttonTheme: ButtonThemeData(buttonColor: themeColors.text),
       radioTheme: RadioThemeData(
         fillColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return null;
-              }
-              if (states.contains(MaterialState.selected)) {
-                return themeColors.brandedText;
-              }
-              return null;
-            }),
+            (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
+            return null;
+          }
+          if (states.contains(MaterialState.selected)) {
+            return themeColors.brandedText;
+          }
+          return null;
+        }),
       ),
       switchTheme: SwitchThemeData(
         thumbColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return themeColors.caption;
-              }
-              if (states.contains(MaterialState.selected)) {
-                return themeColors.brand;
-              }
-              if (states.contains(MaterialState.focused)) {
-                return themeColors.brand;
-              }
-              if (states.contains(MaterialState.pressed)) {
-                return themeColors.brand;
-              }
-              if (states.contains(MaterialState.hovered)) {
-                return themeColors.brand;
-              }
-              if (states.contains(MaterialState.dragged)) {
-                return themeColors.brand;
-              }
-              return null;
-            }),
+            (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
+            return themeColors.caption;
+          }
+          if (states.contains(MaterialState.selected)) {
+            return themeColors.brand;
+          }
+          if (states.contains(MaterialState.focused)) {
+            return themeColors.brand;
+          }
+          if (states.contains(MaterialState.pressed)) {
+            return themeColors.brand;
+          }
+          if (states.contains(MaterialState.hovered)) {
+            return themeColors.brand;
+          }
+          if (states.contains(MaterialState.dragged)) {
+            return themeColors.brand;
+          }
+          return null;
+        }),
         trackColor: MaterialStateProperty.resolveWith<Color?>(
-                (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return themeColors.caption;
-              }
-              if (states.contains(MaterialState.selected)) {
-                return themeColors.text;
-              }
-              return null;
-            }),
+            (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
+            return themeColors.caption;
+          }
+          if (states.contains(MaterialState.selected)) {
+            return themeColors.text;
+          }
+          return null;
+        }),
       ));
 }
