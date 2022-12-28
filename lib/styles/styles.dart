@@ -107,7 +107,7 @@ class ThemeColors {
 
   /// Фоны
   /// Основной фон
-  Color get background => const Color(0xFFECECEC);
+  Color get background => const Color(0xFFE8E8E8);
 
   Color get lightBackground => const Color(0xFFFAFAFA);
 
@@ -182,7 +182,7 @@ class BaseStyle {
 
   Decoration get backgroundDecoration => BoxDecoration(
       gradient: LinearGradient(
-          colors: [themeColors.background, themeColors.lightBackground],
+          colors: [themeColors.lightBackground, themeColors.background],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           tileMode: TileMode.clamp));
@@ -443,6 +443,7 @@ class BaseStyle {
         hintStyle:
             mainTextTheme.titleSmall?.copyWith(color: themeColors.caption),
         labelStyle: mainTextTheme.bodyLarge,
+        floatingLabelStyle: mainTextTheme.labelLarge?.copyWith(color: themeColors.brand),
         suffixStyle: mainTextTheme.titleSmall,
         disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(mediumRadius),

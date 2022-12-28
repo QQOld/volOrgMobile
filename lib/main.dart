@@ -1,11 +1,10 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:vol_org/pages/admin_panel/admin_panel.dart';
 import 'package:vol_org/providers/providers.dart';
 import 'package:vol_org/styles/styles.dart';
 
@@ -21,34 +20,18 @@ Future<void> main() async {
   runApp(const ProviderScope(child: VolOrgApp()));
 }
 
-class AppRouting {
-  static const routeTabParam = "tab";
-
-  static void goToMain(BuildContext context) {
-    context.go("/");
-  }
-
-  static void goToAppTab(BuildContext context, TabType? tab) {
-    final finalTab = tab ??
-        ProviderScope.containerOf(context).read(chosenTabProvider) ??
-        TabType.common;
-    context.go("/${finalTab.name}");
-  }
-}
-
-class VolOrgApp extends StatefulWidget {
+class VolOrgApp extends ConsumerStatefulWidget {
   const VolOrgApp({Key? key}) : super(key: key);
 
   @override
-  State<VolOrgApp> createState() => _VolOrgAppState();
+  ConsumerState<VolOrgApp> createState() => _VolOrgAppState();
 }
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
-
-class _VolOrgAppState extends State<VolOrgApp> {
+class _VolOrgAppState extends ConsumerState<VolOrgApp> {
   @override
   Widget build(BuildContext context) {
+    final auth = ref.watch(authProvider);
+
     return MaterialApp(
       title: "Волонтёры33",
       debugShowCheckedModeBanner: false,
@@ -57,7 +40,15 @@ class _VolOrgAppState extends State<VolOrgApp> {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: const AppShell(),
+        child: auth.when(
+            data: (user) => const AppShell(),
+            error: (e, s) {
+              log("unable to get auth $e", error: e, stackTrace: s);
+              return Container();
+            },
+            loading: () {
+              return const Center(child: CircularProgressIndicator());
+            }),
       ),
     );
   }

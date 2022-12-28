@@ -1,5 +1,38 @@
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vol_org/domain/user.dart';
 
 import '../app_shell.dart';
 
-final chosenTabProvider = Provider.autoDispose<TabType>((ref) => TabType.common);
+final tabListProvider = Provider.family.autoDispose<List<TabType>, AppUser?>((ref, user) => [
+  TabType.common,
+  if(user != null)TabType.messages,
+  TabType.operations,
+  if(user != null)TabType.admin,
+]);
+
+final authProvider = StreamProvider.autoDispose<User?>((ref) {
+  final streamController = StreamController<User?>();
+  String? lastId;
+  final sub = FirebaseAuth.instance.userChanges().listen((user) {
+    if (!streamController.isClosed) {
+      final nid = user?.uid ?? "";
+      if (lastId != nid) {
+        log("Authenticated user ${user?.uid}");
+        if (!streamController.isClosed) {
+          streamController.add(user);
+        }
+      }
+      lastId = nid;
+    }
+  });
+  ref.onDispose(() {
+    streamController.close();
+    sub.cancel();
+  });
+  return streamController.stream;
+});
+
