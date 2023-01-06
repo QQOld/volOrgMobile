@@ -3,7 +3,8 @@ import 'dart:developer';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:vol_org/domain/user.dart';
+import 'package:vol_org/components/show_toast.dart';
+import 'package:vol_org/generated/proto/app_user.pb.dart';
 import 'package:vol_org/pages/credentials/authorization_page.dart';
 import 'package:vol_org/services/auth.dart';
 import 'package:vol_org/styles/styles.dart';
@@ -17,6 +18,8 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
+  final nameController = TextEditingController();
+  final surNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -24,8 +27,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   AuthService authService = AuthService();
 
+  AppUser user = AppUser();
+
   @override
   void dispose() {
+    nameController.dispose();
+    surNameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -46,6 +53,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               final nav = Navigator.of(context);
               if (nav.canPop()) nav.pop();
             },
+            context: context,
           ),
           body: SingleChildScrollView(
             child: Padding(
@@ -57,6 +65,46 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      TextFormField(
+                        controller: nameController,
+                        textInputAction: TextInputAction.next,
+                        autocorrect: false,
+                        decoration: const InputDecoration(
+                            labelText: "Имя", hintText: "Имя"),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (str) {
+                          if (str != null && str.length < 2) {
+                            return "Минимум 2 символа";
+                          }
+                          return null;
+                        },
+                        onChanged: (str) {
+                          user.name = str;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: surNameController,
+                        textInputAction: TextInputAction.next,
+                        autocorrect: false,
+                        decoration: const InputDecoration(
+                            labelText: "Фамилия", hintText: "Фамилия"),
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (str) {
+                          if (str != null && str.length < 2) {
+                            return "Минимум 2 символа";
+                          }
+                          return null;
+                        },
+                        onChanged: (str) {
+                          user.surName = str;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       TextFormField(
                         controller: emailController,
                         textInputAction: TextInputAction.next,
@@ -70,7 +118,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           }
                           return null;
                         },
-                        onChanged: (str) {},
+                        onChanged: (str) {
+                          user.email = str;
+                        },
                       ),
                       const SizedBox(
                         height: 20,
@@ -89,7 +139,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           }
                           return null;
                         },
-                        onChanged: (str) {},
+                        onChanged: (str) {
+                          user.password = str;
+                        },
                       ),
                       const SizedBox(
                         height: 30,
@@ -100,31 +152,17 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           if (formKey.currentState?.validate() ?? true) {
                             try {
                               final nav = Navigator.of(context);
-                              AppUser? user =
-                              await authService.registerWithEmailAndPassword(
-                                emailController.text.trim(),
-                                passwordController.text.trim(),
-                              );
-                              if (user == null) {
-                                Fluttertoast.showToast(
-                                  msg: "Ошибка регистрации",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: styles.themeColors.danger,
-                                );
+                              AppUser? newUser = await authService
+                                  .registerWithEmailAndPassword(user);
+                              if (newUser == null) {
+                                showFailureMessage("Ошибка регистрации");
                               } else {
-                                Fluttertoast.showToast(
-                                  msg: "Успешная регистрация",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: styles.themeColors.success,
-                                );
+                                showSuccessMessage("Успешная регистрация");
                                 formKey.currentState?.reset();
-                                nav.pushReplacement(MaterialPageRoute(builder: (context) => const AuthPage()));
+                                nav.pushReplacement(MaterialPageRoute(
+                                    builder: (context) => const AuthPage()));
                               }
-                            } catch(e) {
+                            } catch (e) {
                               log(e.toString());
                             }
                           }

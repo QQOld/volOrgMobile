@@ -10,8 +10,6 @@ import 'package:vol_org/pages/operations/operations_page.dart';
 import 'package:vol_org/providers/providers.dart';
 import 'package:vol_org/styles/styles.dart';
 
-import 'domain/user.dart';
-
 enum TabType { common, messages, operations, admin }
 
 class AppShell extends ConsumerStatefulWidget {
@@ -32,8 +30,8 @@ class _AppShellState extends ConsumerState<AppShell>
   @override
   void initState() {
     super.initState();
-    final user = ref.read(authProvider).value;
-    final tabList = ref.read(tabListProvider(user != null ? AppUser.fromFirebase(user) : null));
+    final appUser = ref.read(currentUserProvider).value;
+    final tabList = ref.read(tabListProvider(appUser));
 
     tabController = TabController(
         length: tabList.length,
@@ -50,9 +48,9 @@ class _AppShellState extends ConsumerState<AppShell>
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(authProvider).value;
+    final appUser = ref.watch(currentUserProvider).value;
 
-    final tabList = ref.watch(
-        tabListProvider(user != null ? AppUser.fromFirebase(user) : null));
+    final tabList = ref.read(tabListProvider(appUser));
 
     if (tabList.length != tabController?.length) {
       tabController?.dispose();

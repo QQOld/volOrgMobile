@@ -3,16 +3,18 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vol_org/domain/user.dart';
+import 'package:vol_org/services/database_service.dart';
 
 import '../app_shell.dart';
+import '../generated/proto/app_user.pb.dart';
 
-final tabListProvider = Provider.family.autoDispose<List<TabType>, AppUser?>((ref, user) => [
-  TabType.common,
-  if(user != null)TabType.messages,
-  TabType.operations,
-  if(user != null)TabType.admin,
-]);
+final tabListProvider =
+    Provider.family.autoDispose<List<TabType>, AppUser?>((ref, user) => [
+          TabType.common,
+          if (user != null) TabType.messages,
+          TabType.operations,
+          if (user != null) TabType.admin,
+        ]);
 
 final authProvider = StreamProvider.autoDispose<User?>((ref) {
   final streamController = StreamController<User?>();
@@ -36,3 +38,12 @@ final authProvider = StreamProvider.autoDispose<User?>((ref) {
   return streamController.stream;
 });
 
+final currentUserProvider = FutureProvider.autoDispose<AppUser>((ref) async {
+  final db = DatabaseService();
+  final curUser = ref.watch(authProvider).value;
+  if(curUser != null) {
+    final user = await db.getUser(curUser.uid) ?? AppUser();
+    return user..freeze();
+  }
+  return AppUser()..freeze();
+});

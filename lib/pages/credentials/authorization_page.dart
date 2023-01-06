@@ -1,12 +1,14 @@
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:vol_org/domain/user.dart';
 import 'package:vol_org/pages/credentials/registr_page.dart';
 import 'package:vol_org/services/auth.dart';
 import 'package:vol_org/styles/styles.dart';
 import 'package:vol_org/widgets/app_bar_back_button.dart';
+
+import '../../components/show_toast.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -45,6 +47,7 @@ class _AuthPageState extends State<AuthPage> {
               final nav = Navigator.of(context);
               if (nav.canPop()) nav.pop();
             },
+            context: context,
           ),
           body: Padding(
             padding: const EdgeInsets.all(15),
@@ -83,29 +86,27 @@ class _AuthPageState extends State<AuthPage> {
                         if (formKey.currentState?.validate() ?? true) {
                           try {
                             final nav = Navigator.of(context);
-                            AppUser? user =
+                            User? user =
                                 await authService.signInWithEmailAndPassword(
                               emailController.text.trim(),
                               passwordController.text.trim(),
                             );
                             if (user == null) {
-                              Fluttertoast.showToast(
-                                msg: "Ошибка логина",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: styles.themeColors.danger,
-                              );
+                              showFailureMessage("Ошибка логина");
                             } else {
                               formKey.currentState?.reset();
                               nav.pop();
                             }
-                          } catch(e) {
+                          } catch (e) {
                             log(e.toString());
                           }
                         }
                       },
-                      child: Text("Войти", style: styles.mainTextTheme.bodyLarge?.copyWith(letterSpacing: 0.5),),
+                      child: Text(
+                        "Войти",
+                        style: styles.mainTextTheme.bodyLarge
+                            ?.copyWith(letterSpacing: 0.5),
+                      ),
                     ),
                     const SizedBox(
                       height: 5,

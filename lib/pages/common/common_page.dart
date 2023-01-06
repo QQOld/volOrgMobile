@@ -15,7 +15,7 @@ class _CommonPagePageState extends ConsumerState<CommonPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarBack(title: "Главная"),
+      appBar: AppBarBack(title: "Главная", context: context,),
       body: const Padding(
         padding: EdgeInsets.all(15),
         child: CommonContent(),

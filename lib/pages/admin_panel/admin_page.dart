@@ -30,7 +30,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
     var routeBuilders = _routeBuilders(context);
 
     return Scaffold(
-      appBar: AppBarBack(title: "Администрирование"),
+      appBar: AppBarBack(title: "Администрирование", context: context,),
       body: Navigator(
         key: commonNavigatorKey,
         initialRoute: '/',

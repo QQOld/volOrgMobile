@@ -382,7 +382,7 @@ class BaseStyle {
               brightness: Brightness.light, primarySwatch: swatch)
           .copyWith(secondary: themeColors.cardSecondaryColor),
       backgroundColor: themeColors.background,
-      scaffoldBackgroundColor: Colors.transparent,
+      scaffoldBackgroundColor: themeColors.lightBackground,
       primaryColor: themeColors.brand,
       primaryColorDark: themeColors.brandDarker,
       canvasColor: themeColors.translucent,
@@ -416,6 +416,9 @@ class BaseStyle {
           backgroundColor: themeColors.brand,
           unselectedItemColor: baseColors.black,
           selectedItemColor: themeColors.onBrandText),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: themeColors.brand,
+      ),
 
       ///Разделитель
       dividerTheme: DividerThemeData(

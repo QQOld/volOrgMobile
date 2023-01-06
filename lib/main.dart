@@ -5,10 +5,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:vol_org/app_shell.dart';
 import 'package:vol_org/providers/providers.dart';
 import 'package:vol_org/styles/styles.dart';
 
-import 'app_shell.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -31,6 +31,7 @@ class _VolOrgAppState extends ConsumerState<VolOrgApp> {
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authProvider);
+    final currentUser = ref.watch(currentUserProvider);
 
     return MaterialApp(
       title: "Волонтёры33",
@@ -40,15 +41,24 @@ class _VolOrgAppState extends ConsumerState<VolOrgApp> {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: auth.when(
-            data: (user) => const AppShell(),
-            error: (e, s) {
-              log("unable to get auth $e", error: e, stackTrace: s);
-              return Container();
-            },
-            loading: () {
-              return const Center(child: CircularProgressIndicator());
-            }),
+        child: Scaffold(
+          body: auth.when(data: (user) {
+            return currentUser.when(
+                data: (curUser) => const AppShell(),
+                error: (e, s) {
+                  log("unable to get auth $e", error: e, stackTrace: s);
+                  return Container();
+                },
+                loading: () {
+                  return const Center(child: CircularProgressIndicator());
+                });
+          }, error: (e, s) {
+            log("unable to get auth $e", error: e, stackTrace: s);
+            return Container();
+          }, loading: () {
+            return const Center(child: CircularProgressIndicator());
+          }),
+        ),
       ),
     );
   }
