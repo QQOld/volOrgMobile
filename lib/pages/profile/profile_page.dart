@@ -1,11 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vol_org/generated/proto/app_user.pb.dart';
+import 'package:vol_org/generated/app_user.pb.dart';
 import 'package:vol_org/providers/providers.dart';
 import 'package:vol_org/widgets/app_bar_back_button.dart';
 
 import '../../services/auth.dart';
-import '../../services/database_service.dart';
+import '../../services/user_service.dart';
 import '../../styles/styles.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
@@ -21,14 +23,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   final surNameController = TextEditingController();
 
   AuthService authService = AuthService();
-  DatabaseService dbService = DatabaseService();
+  UserService dbService = UserService();
 
   @override
   void initState() {
     super.initState();
-    final curUser = ref
-        .read(currentUserProvider)
-        .value ?? AppUser();
+    final curUser = ref.read(currentUserProvider).value ?? AppUser();
+    log(curUser.toString());
     emailController.text = curUser.email;
     nameController.text = curUser.name;
     surNameController.text = curUser.surName;
@@ -44,9 +45,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final curUser = ref
-        .watch(currentUserProvider)
-        .value ?? AppUser()
+    final curUser = ref.watch(currentUserProvider).value ?? AppUser()
       ..freeze();
 
     return Container(
@@ -55,6 +54,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         appBar: AppBarBack(
           title: 'Профиль',
           context: context,
+          showProfile: false,
           onBack: () {
             final nav = Navigator.of(context);
             if (nav.canPop()) nav.pop();
@@ -68,12 +68,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 children: [
                   TextFormField(
                     controller: emailController,
+                    readOnly: true,
                     textInputAction: TextInputAction.next,
                     autocorrect: false,
                     decoration: const InputDecoration(
                         labelText: "Email", hintText: "myemail@mail.ru"),
-                    onChanged: (str) {
-                    },
+                    onChanged: (str) {},
                   ),
                   const SizedBox(
                     height: 20,
@@ -96,7 +96,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                         labelText: "Фамилия", hintText: "Фамилия"),
-                    onChanged: (str) {},
+                    onChanged: (str) {
+                      setState(() {});
+                    },
                   ),
                   const SizedBox(
                     height: 30,
@@ -106,14 +108,18 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                       emailController.text != curUser.email)
                     ElevatedButton(
                       onPressed: () async {
-                        dbService.addOrUpdateUser(AppUser(id: curUser.id,
-                          name: nameController.text,
-                          surName: surNameController.text,
-                          email: emailController.text,),
+                        dbService.addOrUpdateUser(
+                          AppUser(
+                            id: curUser.id,
+                            name: nameController.text,
+                            surName: surNameController.text,
+                            email: emailController.text,
+                          ),
                         );
-                        if(emailController.text != curUser.email) {
 
-                        }
+                        ///TODO изменение почты
+                        if (emailController.text != curUser.email) {}
+                        ref.refresh(currentUserProvider);
                       },
                       child: Text(
                         "Сохранить",
@@ -128,7 +134,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: styles.themeColors.danger),
                     onPressed: () async {
+                      final nav = Navigator.of(context);
                       await authService.logOut();
+                      nav.popUntil(ModalRoute.withName("/"));
                     },
                     child: Text(
                       "Выйти",

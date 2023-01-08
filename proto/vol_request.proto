@@ -1,0 +1,22 @@
+syntax = "proto3";
+package vol_request;
+
+message VolRequest {
+  string id = 1;
+  string phone = 2;
+  int32 age = 3;
+  Sex sex = 4;
+  string liv_area = 5;
+  Status status = 6;
+}
+
+enum Sex {
+  MALE = 0;
+  FEMALE = 1;
+}
+
+enum Status {
+  PENDING = 0;
+  ACCEPTED = 1;
+  REJECTED = 2;
+}

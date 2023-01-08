@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: proto/app_user.proto
+//  source: app_user.proto
 //
 // @dart = 2.12
 // ignore_for_file: annotate_overrides,camel_case_types,constant_identifier_names,directives_ordering,library_prefixes,non_constant_identifier_names,prefer_final_fields,return_of_invalid_type,unnecessary_const,unnecessary_import,unnecessary_this,unused_import,unused_shown_name
@@ -9,13 +9,21 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'vol_request.pb.dart' as $0;
+
+import 'app_user.pbenum.dart';
+
+export 'app_user.pbenum.dart';
+
 class AppUser extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'AppUser', package: const $pb.PackageName(const $core.bool.fromEnvironment('protobuf.omit_message_names') ? '' : 'app_user'), createEmptyInstance: create)
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..aOS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'email')
     ..aOS(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'name')
-    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'surName', protoName: 'surName')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'surName')
     ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'password')
+    ..e<AppUser_Role>(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'role', $pb.PbFieldType.OE, defaultOrMaker: AppUser_Role.USER, valueOf: AppUser_Role.valueOf, enumValues: AppUser_Role.values)
+    ..aOM<$0.VolRequest>(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'volRequest', subBuilder: $0.VolRequest.create)
     ..hasRequiredFields = false
   ;
 
@@ -26,6 +34,8 @@ class AppUser extends $pb.GeneratedMessage {
     $core.String? name,
     $core.String? surName,
     $core.String? password,
+    AppUser_Role? role,
+    $0.VolRequest? volRequest,
   }) {
     final _result = create();
     if (id != null) {
@@ -42,6 +52,12 @@ class AppUser extends $pb.GeneratedMessage {
     }
     if (password != null) {
       _result.password = password;
+    }
+    if (role != null) {
+      _result.role = role;
+    }
+    if (volRequest != null) {
+      _result.volRequest = volRequest;
     }
     return _result;
   }
@@ -110,5 +126,25 @@ class AppUser extends $pb.GeneratedMessage {
   $core.bool hasPassword() => $_has(4);
   @$pb.TagNumber(5)
   void clearPassword() => clearField(5);
+
+  @$pb.TagNumber(6)
+  AppUser_Role get role => $_getN(5);
+  @$pb.TagNumber(6)
+  set role(AppUser_Role v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasRole() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearRole() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $0.VolRequest get volRequest => $_getN(6);
+  @$pb.TagNumber(7)
+  set volRequest($0.VolRequest v) { setField(7, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasVolRequest() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearVolRequest() => clearField(7);
+  @$pb.TagNumber(7)
+  $0.VolRequest ensureVolRequest() => $_ensure(6);
 }
 

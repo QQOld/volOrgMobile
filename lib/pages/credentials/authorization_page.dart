@@ -2,22 +2,24 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vol_org/app_shell.dart';
 import 'package:vol_org/pages/credentials/registr_page.dart';
+import 'package:vol_org/providers/providers.dart';
 import 'package:vol_org/services/auth.dart';
 import 'package:vol_org/styles/styles.dart';
 import 'package:vol_org/widgets/app_bar_back_button.dart';
 
 import '../../components/show_toast.dart';
 
-class AuthPage extends StatefulWidget {
+class AuthPage extends ConsumerStatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
 
   @override
-  State<AuthPage> createState() => _AuthPageState();
+  ConsumerState<AuthPage> createState() => _AuthPageState();
 }
 
-class _AuthPageState extends State<AuthPage> {
+class _AuthPageState extends ConsumerState<AuthPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -95,7 +97,8 @@ class _AuthPageState extends State<AuthPage> {
                               showFailureMessage("Ошибка логина");
                             } else {
                               formKey.currentState?.reset();
-                              nav.pop();
+                              ref.refresh(currentUserProvider);
+                              nav.popUntil(ModalRoute.withName("/"));
                             }
                           } catch (e) {
                             log(e.toString());

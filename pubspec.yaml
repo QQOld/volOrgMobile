@@ -58,6 +58,7 @@ dependencies:
   flutter_timetable: 1.1.0
   email_validator: 2.1.17
   fluttertoast: 8.1.2
+  libphonenumber: ^2.0.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

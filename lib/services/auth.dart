@@ -1,16 +1,13 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:vol_org/generated/proto/app_user.pb.dart';
-import 'package:vol_org/styles/styles.dart';
+import 'package:vol_org/generated/app_user.pb.dart';
 
-import 'database_service.dart';
+import 'user_service.dart';
 
 class AuthService {
   final FirebaseAuth fAuth = FirebaseAuth.instance;
-  final DatabaseService db = DatabaseService();
+  final UserService db = UserService();
 
   Future<User?> signInWithEmailAndPassword(String email, String password) async {
     try {
@@ -32,7 +29,8 @@ class AuthService {
           id: user.uid,
           name: appUser.name,
           surName: appUser.surName,
-          email: user.email
+          email: user.email,
+          role: AppUser_Role.USER,
         );
         await db.addOrUpdateUser(newUser);
         return newUser;

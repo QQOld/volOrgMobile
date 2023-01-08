@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vol_org/pages/admin_panel/admin_panel.dart';
+import 'package:vol_org/pages/admin_panel/vol_reqs/vol_reqs_page.dart';
 import 'package:vol_org/widgets/app_bar_back_button.dart';
+
+import '../../styles/styles.dart';
 
 class AdminPanelPage extends ConsumerStatefulWidget {
   const AdminPanelPage({
@@ -16,33 +18,65 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
   final GlobalKey<NavigatorState> commonNavigatorKey =
       GlobalKey<NavigatorState>();
 
-  Map<String, WidgetBuilder> _routeBuilders(BuildContext context) {
-    return {
-      '/': (context) => AdminPanel(),
-      '/1': (context) => ElevatedButton(onPressed: () {
-        Navigator.of(context).pushNamed('/');
-      }, child: Text("go")),
-    };
-  }
-
   @override
   Widget build(BuildContext context) {
-    var routeBuilders = _routeBuilders(context);
-
     return Scaffold(
-      appBar: AppBarBack(title: "Администрирование", context: context,),
-      body: Navigator(
-        key: commonNavigatorKey,
-        initialRoute: '/',
-        onGenerateRoute: (RouteSettings routeSettings) {
-          return MaterialPageRoute(
-              builder: (context) =>
-                  routeBuilders[routeSettings.name]!(context));
-        },
-        onPopPage: (route, result) {
-          return true;
-        },
-      ),
-    );
+        appBar: AppBarBack(
+          title: "Администрирование",
+          context: context,
+        ),
+        body: ListView(
+          shrinkWrap: true,
+          children: [
+            ListTile(
+              title: const Text("Заявки в волонтеры"),
+              trailing: Container(
+                width: 25,
+                height: 25,
+                decoration: BoxDecoration(
+                  color: styles.baseColors.grey.withOpacity(0.7),
+                  shape: BoxShape.circle,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  "1",
+                  style: styles.mainTextTheme.labelLarge
+                      ?.copyWith(color: Colors.white),
+                ),
+              ),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const VolReqsPage(),
+                  ),
+                );
+              },
+            ),
+            const Divider(),
+            ListTile(
+              title: const Text("Заявки на поиск"),
+              onTap: () {},
+            ),
+            const Divider(),
+            ListTile(
+              title: const Text("Операции"),
+              trailing: Container(
+                width: 25,
+                height: 25,
+                decoration: BoxDecoration(
+                  color: styles.baseColors.grey.withOpacity(0.7),
+                  shape: BoxShape.circle,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  "23",
+                  style: styles.mainTextTheme.labelLarge
+                      ?.copyWith(color: Colors.white),
+                ),
+              ),
+              onTap: () {},
+            ),
+          ],
+        ));
   }
 }

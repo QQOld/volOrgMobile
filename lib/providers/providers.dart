@@ -3,18 +3,27 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:vol_org/services/database_service.dart';
+import 'package:vol_org/generated/app_user.pb.dart';
+import 'package:vol_org/generated/vol_request.pb.dart';
+import 'package:vol_org/services/user_service.dart';
 
 import '../app_shell.dart';
-import '../generated/proto/app_user.pb.dart';
 
-final tabListProvider =
-    Provider.family.autoDispose<List<TabType>, AppUser?>((ref, user) => [
-          TabType.common,
-          if (user != null) TabType.messages,
-          TabType.operations,
-          if (user != null) TabType.admin,
-        ]);
+const sexMap = {
+  Sex.MALE: "Мужской",
+  Sex.FEMALE: "Женский",
+};
+
+final tabListProvider = Provider.family.autoDispose<List<TabType>, AppUser?>(
+  (ref, user) => [
+    TabType.common,
+    if (user?.role == AppUser_Role.VOLUNTEER ||
+        user?.role == AppUser_Role.ADMIN)
+      TabType.messages,
+    TabType.operations,
+    if (user?.role == AppUser_Role.ADMIN) TabType.admin,
+  ],
+);
 
 final authProvider = StreamProvider.autoDispose<User?>((ref) {
   final streamController = StreamController<User?>();
@@ -39,11 +48,32 @@ final authProvider = StreamProvider.autoDispose<User?>((ref) {
 });
 
 final currentUserProvider = FutureProvider.autoDispose<AppUser>((ref) async {
-  final db = DatabaseService();
+  final db = UserService();
   final curUser = ref.watch(authProvider).value;
-  if(curUser != null) {
+  if (curUser != null) {
     final user = await db.getUser(curUser.uid) ?? AppUser();
     return user..freeze();
   }
   return AppUser()..freeze();
+});
+
+final allUsersProvider = StreamProvider.autoDispose<List<AppUser>>((ref) {
+  final userService = UserService();
+  final streamController = StreamController<List<AppUser>>();
+  final sub = userService.getAllUsers.listen((user) {
+    if (!streamController.isClosed) {
+      final list = user.docs.map((e) => e.data()).toList();
+      streamController.add(list);
+    }
+  });
+  ref.onDispose(() {
+    streamController.close();
+    sub.cancel();
+  });
+  return streamController.stream;
+});
+
+final usersWithVolReqsProvider = Provider.family.autoDispose<List<AppUser>, List<AppUser>>((ref, users) {
+  final list = users.where((user) => user.hasVolRequest() && user.volRequest.status == Status.PENDING).toList();
+  return list;
 });

@@ -30,36 +30,42 @@ class VolOrgApp extends ConsumerStatefulWidget {
 class _VolOrgAppState extends ConsumerState<VolOrgApp> {
   @override
   Widget build(BuildContext context) {
-    final auth = ref.watch(authProvider);
-    final currentUser = ref.watch(currentUserProvider);
 
     return MaterialApp(
       title: "Волонтёры33",
       debugShowCheckedModeBanner: false,
       theme: styles.mainTheme,
-      home: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
+      initialRoute: '/',
+      routes: {
+        '/': (context) {
+          final auth = ref.watch(authProvider);
+          final currentUser = ref.watch(currentUserProvider);
+
+          return GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: Scaffold(
+              body: auth.when(data: (user) {
+                return currentUser.when(
+                    data: (curUser) => const AppShell(),
+                    error: (e, s) {
+                      log("unable to get auth $e", error: e, stackTrace: s);
+                      return Container();
+                    },
+                    loading: () {
+                      return const Center(child: CircularProgressIndicator());
+                    });
+              }, error: (e, s) {
+                log("unable to get auth $e", error: e, stackTrace: s);
+                return Container();
+              }, loading: () {
+                return const Center(child: CircularProgressIndicator());
+              }),
+            ),
+          );
         },
-        child: Scaffold(
-          body: auth.when(data: (user) {
-            return currentUser.when(
-                data: (curUser) => const AppShell(),
-                error: (e, s) {
-                  log("unable to get auth $e", error: e, stackTrace: s);
-                  return Container();
-                },
-                loading: () {
-                  return const Center(child: CircularProgressIndicator());
-                });
-          }, error: (e, s) {
-            log("unable to get auth $e", error: e, stackTrace: s);
-            return Container();
-          }, loading: () {
-            return const Center(child: CircularProgressIndicator());
-          }),
-        ),
-      ),
+      },
     );
   }
 }

@@ -223,6 +223,16 @@ class BaseStyle {
       alignment: Alignment.center,
       minimumSize: const Size(double.infinity, 40));
 
+  ButtonStyle get checkElevatedButtonStyle => ElevatedButton.styleFrom(
+        foregroundColor: themeColors.onDarkBrand,
+        backgroundColor: baseColors.cyan,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(minRadius))),
+        //padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 3),
+        alignment: Alignment.center,
+        //minimumSize: const Size(150, 40),
+      );
+
   /// Обведенные кнопки
   ButtonStyle get outlinedButtonStyle => OutlinedButton.styleFrom(
       foregroundColor: themeColors.brandedText,
@@ -446,7 +456,8 @@ class BaseStyle {
         hintStyle:
             mainTextTheme.titleSmall?.copyWith(color: themeColors.caption),
         labelStyle: mainTextTheme.bodyLarge,
-        floatingLabelStyle: mainTextTheme.labelLarge?.copyWith(color: themeColors.brand),
+        floatingLabelStyle:
+            mainTextTheme.labelLarge?.copyWith(color: themeColors.brand),
         suffixStyle: mainTextTheme.titleSmall,
         disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(mediumRadius),

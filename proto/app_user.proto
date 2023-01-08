@@ -1,10 +1,20 @@
 syntax = "proto3";
 package app_user;
 
+import "vol_request.proto";
+
 message AppUser {
+  enum Role {
+    USER = 0;
+    VOLUNTEER = 1;
+    ADMIN = 2;
+  }
+
   string id = 1;
   string email = 2;
   string name = 3;
-  string surName = 4;
+  string sur_name = 4;
   string password = 5;
+  Role role = 6;
+  vol_request.VolRequest vol_request = 7;
 }

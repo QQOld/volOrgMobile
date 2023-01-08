@@ -4,9 +4,10 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:vol_org/components/show_toast.dart';
-import 'package:vol_org/generated/proto/app_user.pb.dart';
+import 'package:vol_org/generated/app_user.pb.dart';
 import 'package:vol_org/pages/credentials/authorization_page.dart';
 import 'package:vol_org/services/auth.dart';
+import 'package:vol_org/services/user_service.dart';
 import 'package:vol_org/styles/styles.dart';
 import 'package:vol_org/widgets/app_bar_back_button.dart';
 
@@ -26,6 +27,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final formKey = GlobalKey<FormState>();
 
   AuthService authService = AuthService();
+  UserService userService = UserService();
 
   AppUser user = AppUser();
 
@@ -158,9 +160,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 showFailureMessage("Ошибка регистрации");
                               } else {
                                 showSuccessMessage("Успешная регистрация");
+                                await userService.addOrUpdateUser(newUser);
                                 formKey.currentState?.reset();
-                                nav.pushReplacement(MaterialPageRoute(
-                                    builder: (context) => const AuthPage()));
+                                nav.popUntil(ModalRoute.withName("/"));
                               }
                             } catch (e) {
                               log(e.toString());
@@ -178,7 +180,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(
+                          Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (context) => const AuthPage(),
                             ),
