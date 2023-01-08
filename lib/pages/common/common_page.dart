@@ -1,6 +1,10 @@
+import 'dart:developer';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vol_org/generated/app_user.pb.dart';
+import 'package:vol_org/pages/common/search_req_page.dart';
 import 'package:vol_org/pages/common/vol_req_page.dart';
 import 'package:vol_org/pages/credentials/registr_page.dart';
 import 'package:vol_org/providers/providers.dart';
@@ -40,7 +44,7 @@ class _CommonPagePageState extends ConsumerState<CommonPage> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return const RegistrationPage();
+                      return const SearchReqPage();
                     },
                   ),
                 );

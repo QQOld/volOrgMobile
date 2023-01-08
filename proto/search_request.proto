@@ -1,0 +1,17 @@
+syntax = "proto3";
+package search_request;
+
+import "vol_request.proto";
+
+message SearchRequest {
+    string id = 1;
+    string full_name = 2;
+    int32 age = 3;
+    vol_request.Sex sex = 4;
+    string miss_area = 5;
+    string miss_time = 6;
+    string add_inf = 7;
+    string photo = 8;
+    vol_request.Status status = 9;
+    string user_id = 10;
+}

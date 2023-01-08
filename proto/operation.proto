@@ -1,0 +1,17 @@
+syntax = "proto3";
+package operation;
+
+import "chat.proto";
+import "vol_request.proto";
+
+message Operation {
+    string id = 1;
+    repeated string users_id = 2;
+    chat.Chat chat = 3;
+    vol_request.Sex sex = 4;
+    string miss_area = 5;
+    string miss_time = 6;
+    string add_inf = 7;
+    string photo = 8;
+    vol_request.Status status = 9;
+}

@@ -228,10 +228,24 @@ class BaseStyle {
         backgroundColor: baseColors.cyan,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(minRadius))),
-        //padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 3),
         alignment: Alignment.center,
-        //minimumSize: const Size(150, 40),
       );
+  ButtonStyle get acceptElevatedButtonStyle => ElevatedButton.styleFrom(
+    foregroundColor: themeColors.onDarkBrand,
+    backgroundColor: themeColors.success,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(minRadius))),
+    alignment: Alignment.center,
+  );
+
+  ButtonStyle get declineElevatedButtonStyle => ElevatedButton.styleFrom(
+    foregroundColor: themeColors.onDarkBrand,
+    backgroundColor: themeColors.danger,
+    shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(minRadius))),
+    //padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 3),
+    alignment: Alignment.center,
+  );
 
   /// Обведенные кнопки
   ButtonStyle get outlinedButtonStyle => OutlinedButton.styleFrom(

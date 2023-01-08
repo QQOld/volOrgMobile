@@ -27,7 +27,7 @@ class _VolReqPageState extends ConsumerState<VolReqPage> {
   final formKey = GlobalKey<FormState>();
 
   final UserService userService = UserService();
-  var volReq = VolRequest()..freeze();
+  var volReq = VolRequest(status: Status.PENDING)..freeze();
 
   @override
   void dispose() {
@@ -170,6 +170,7 @@ class _VolReqPageState extends ConsumerState<VolReqPage> {
                       onPressed: () async {
                         if (formKey.currentState?.validate() ?? true) {
                           final nav = Navigator.of(context);
+
                           final isSuccessful = await userService
                               .addOrUpdateVolReq(curUser ?? AppUser(), volReq);
                           if (isSuccessful) {
