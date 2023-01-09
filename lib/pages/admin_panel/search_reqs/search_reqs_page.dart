@@ -36,7 +36,9 @@ class _SearchReqsPageState extends ConsumerState<SearchReqsPage> {
         ),
         body: searchReqs.when(
           data: (data) {
-            return ListView.separated(
+            return data.isEmpty
+            ? const Center(child: Text("Заявок нет"))
+            : ListView.separated(
               itemCount: data.length,
               shrinkWrap: true,
               separatorBuilder: (BuildContext context, int index) =>

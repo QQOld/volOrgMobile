@@ -31,7 +31,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
           children: [
             ListTile(
               title: const Text("Заявки в волонтеры"),
-              trailing: Container(
+              /*trailing: Container(
                 width: 25,
                 height: 25,
                 decoration: BoxDecoration(
@@ -44,7 +44,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
                   style: styles.mainTextTheme.labelLarge
                       ?.copyWith(color: Colors.white),
                 ),
-              ),
+              ),*/
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -67,7 +67,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
             const Divider(),
             ListTile(
               title: const Text("Операции"),
-              trailing: Container(
+              /*trailing: Container(
                 width: 25,
                 height: 25,
                 decoration: BoxDecoration(
@@ -80,7 +80,7 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
                   style: styles.mainTextTheme.labelLarge
                       ?.copyWith(color: Colors.white),
                 ),
-              ),
+              ),*/
               onTap: () {},
             ),
           ],

@@ -30,8 +30,9 @@ class _VolReqsPageState extends ConsumerState<VolReqsPage> {
         body: users.when(
           data: (data) {
             final usersList = ref.watch(usersWithVolReqsProvider(data));
-
-            return ListView.separated(
+            return data.isEmpty
+                ? const Center(child: Text("Заявок нет"))
+                : ListView.separated(
               itemCount: usersList.length,
               shrinkWrap: true,
               separatorBuilder: (BuildContext context, int index) =>

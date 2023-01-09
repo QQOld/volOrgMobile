@@ -12,7 +12,7 @@ Widget pairTextBuilder(String title, String text) {
       const SizedBox(
         width: 5,
       ),
-      Text(text),
+      Expanded(child: Text(text)),
     ],
   );
 }

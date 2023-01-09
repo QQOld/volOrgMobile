@@ -10,6 +10,7 @@ import 'package:vol_org/widgets/app_bar_back_button.dart';
 import '../../services/user_service.dart';
 import '../../styles/styles.dart';
 import '../admin_panel/search_reqs/search_req_info.dart';
+import 'operation_info_page.dart';
 
 class OperationsPage extends ConsumerStatefulWidget {
   const OperationsPage({Key? key}) : super(key: key);
@@ -70,19 +71,18 @@ class _OperationsPageState extends ConsumerState<OperationsPage> {
                         ),
                         title: Text("${req.fullName}, ${req.age} лет"),
                         subtitle: Text("${req.missArea}, ${req.missTime}"),
-
                         trailing: Icon(
                           Icons.arrow_forward,
                           color: styles.baseColors.cyan,
                           size: 30,
                         ),
                         onTap: () {
-                          /*Navigator.of(context).push(
+                          Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) =>
-                                  SearchReqInfoPage(reqInfo: op),
+                                  OperationInfoPage(reqInfo: req),
                             ),
-                          );*/
+                          );
                         },
                       );
                     } else if (snapshot.hasError) {
