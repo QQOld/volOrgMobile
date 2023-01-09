@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vol_org/pages/admin_panel/search_reqs/search_reqs_page.dart';
 import 'package:vol_org/pages/admin_panel/vol_reqs/vol_reqs_page.dart';
 import 'package:vol_org/widgets/app_bar_back_button.dart';
 
@@ -55,7 +56,13 @@ class _AdminPanelPageState extends ConsumerState<AdminPanelPage> {
             const Divider(),
             ListTile(
               title: const Text("Заявки на поиск"),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const SearchReqsPage(),
+                  ),
+                );
+              },
             ),
             const Divider(),
             ListTile(

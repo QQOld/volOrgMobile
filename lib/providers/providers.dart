@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vol_org/generated/app_user.pb.dart';
+import 'package:vol_org/generated/operation.pb.dart';
+import 'package:vol_org/generated/search_request.pb.dart';
 import 'package:vol_org/generated/vol_request.pb.dart';
 import 'package:vol_org/services/user_service.dart';
 
@@ -76,4 +78,36 @@ final allUsersProvider = StreamProvider.autoDispose<List<AppUser>>((ref) {
 final usersWithVolReqsProvider = Provider.family.autoDispose<List<AppUser>, List<AppUser>>((ref, users) {
   final list = users.where((user) => user.hasVolRequest() && user.volRequest.status == Status.PENDING).toList();
   return list;
+});
+
+final pendingReqsProvider = StreamProvider.autoDispose<List<SearchRequest>>((ref) {
+  final userService = UserService();
+  final streamController = StreamController<List<SearchRequest>>();
+  final sub = userService.getPendingSearchReqs.listen((searchReq) {
+    if (!streamController.isClosed) {
+      final list = searchReq.docs.map((e) => e.data()).toList();
+      streamController.add(list);
+    }
+  });
+  ref.onDispose(() {
+    streamController.close();
+    sub.cancel();
+  });
+  return streamController.stream;
+});
+
+final pendingOperationsProvider = StreamProvider.autoDispose<List<Operation>>((ref) {
+  final userService = UserService();
+  final streamController = StreamController<List<Operation>>();
+  final sub = userService.getPendingOperations.listen((op) {
+    if (!streamController.isClosed) {
+      final list = op.docs.map((e) => e.data()).toList();
+      streamController.add(list);
+    }
+  });
+  ref.onDispose(() {
+    streamController.close();
+    sub.cancel();
+  });
+  return streamController.stream;
 });

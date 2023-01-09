@@ -15,14 +15,10 @@ const Operation$json = const {
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'users_id', '3': 2, '4': 3, '5': 9, '10': 'usersId'},
     const {'1': 'chat', '3': 3, '4': 1, '5': 11, '6': '.chat.Chat', '10': 'chat'},
-    const {'1': 'sex', '3': 4, '4': 1, '5': 14, '6': '.vol_request.Sex', '10': 'sex'},
-    const {'1': 'miss_area', '3': 5, '4': 1, '5': 9, '10': 'missArea'},
-    const {'1': 'miss_time', '3': 6, '4': 1, '5': 9, '10': 'missTime'},
-    const {'1': 'add_inf', '3': 7, '4': 1, '5': 9, '10': 'addInf'},
-    const {'1': 'photo', '3': 8, '4': 1, '5': 9, '10': 'photo'},
-    const {'1': 'status', '3': 9, '4': 1, '5': 14, '6': '.vol_request.Status', '10': 'status'},
+    const {'1': 'search_req_id', '3': 4, '4': 1, '5': 9, '10': 'searchReqId'},
+    const {'1': 'status', '3': 5, '4': 1, '5': 14, '6': '.vol_request.Status', '10': 'status'},
   ],
 };
 
 /// Descriptor for `Operation`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List operationDescriptor = $convert.base64Decode('CglPcGVyYXRpb24SDgoCaWQYASABKAlSAmlkEhkKCHVzZXJzX2lkGAIgAygJUgd1c2Vyc0lkEh4KBGNoYXQYAyABKAsyCi5jaGF0LkNoYXRSBGNoYXQSIgoDc2V4GAQgASgOMhAudm9sX3JlcXVlc3QuU2V4UgNzZXgSGwoJbWlzc19hcmVhGAUgASgJUghtaXNzQXJlYRIbCgltaXNzX3RpbWUYBiABKAlSCG1pc3NUaW1lEhcKB2FkZF9pbmYYByABKAlSBmFkZEluZhIUCgVwaG90bxgIIAEoCVIFcGhvdG8SKwoGc3RhdHVzGAkgASgOMhMudm9sX3JlcXVlc3QuU3RhdHVzUgZzdGF0dXM=');
+final $typed_data.Uint8List operationDescriptor = $convert.base64Decode('CglPcGVyYXRpb24SDgoCaWQYASABKAlSAmlkEhkKCHVzZXJzX2lkGAIgAygJUgd1c2Vyc0lkEh4KBGNoYXQYAyABKAsyCi5jaGF0LkNoYXRSBGNoYXQSIgoNc2VhcmNoX3JlcV9pZBgEIAEoCVILc2VhcmNoUmVxSWQSKwoGc3RhdHVzGAUgASgOMhMudm9sX3JlcXVlc3QuU3RhdHVzUgZzdGF0dXM=');

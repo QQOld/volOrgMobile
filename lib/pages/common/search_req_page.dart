@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:vol_org/components/image_picker.dart';
-import 'package:vol_org/generated/app_user.pb.dart';
 import 'package:vol_org/generated/vol_request.pb.dart';
 import 'package:vol_org/providers/providers.dart';
 import 'package:vol_org/styles/styles.dart';
@@ -37,6 +36,15 @@ class _SearchReqPageState extends ConsumerState<SearchReqPage> {
   var searchReq = SearchRequest(status: Status.PENDING)..freeze();
 
   @override
+  void initState() {
+    super.initState();
+    final curUser = ref.read(currentUserProvider).value;
+    searchReq = searchReq.rebuild((p0) {
+      p0.userId = curUser?.id ?? "";
+    });
+  }
+
+  @override
   void dispose() {
     fullNameController.dispose();
     ageController.dispose();
@@ -49,8 +57,6 @@ class _SearchReqPageState extends ConsumerState<SearchReqPage> {
 
   @override
   Widget build(BuildContext context) {
-    final curUser = ref.watch(currentUserProvider).value;
-
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -236,8 +242,7 @@ class _SearchReqPageState extends ConsumerState<SearchReqPage> {
                         final nav = Navigator.of(context);
 
                         final isSuccessful =
-                            await userService.addOrUpdateSearchReq(
-                                curUser?.id ?? "", searchReq);
+                            await userService.addOrUpdateSearchReq(searchReq);
                         if (isSuccessful) {
                           showSuccessMessage("Заявка отправлена");
                           formKey.currentState?.reset();

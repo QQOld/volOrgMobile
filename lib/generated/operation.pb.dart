@@ -18,12 +18,8 @@ class Operation extends $pb.GeneratedMessage {
     ..aOS(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'id')
     ..pPS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'usersId')
     ..aOM<$1.Chat>(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'chat', subBuilder: $1.Chat.create)
-    ..e<$0.Sex>(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'sex', $pb.PbFieldType.OE, defaultOrMaker: $0.Sex.MALE, valueOf: $0.Sex.valueOf, enumValues: $0.Sex.values)
-    ..aOS(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'missArea')
-    ..aOS(6, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'missTime')
-    ..aOS(7, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'addInf')
-    ..aOS(8, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'photo')
-    ..e<$0.Status>(9, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'status', $pb.PbFieldType.OE, defaultOrMaker: $0.Status.PENDING, valueOf: $0.Status.valueOf, enumValues: $0.Status.values)
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'searchReqId')
+    ..e<$0.Status>(5, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'status', $pb.PbFieldType.OE, defaultOrMaker: $0.Status.PENDING, valueOf: $0.Status.valueOf, enumValues: $0.Status.values)
     ..hasRequiredFields = false
   ;
 
@@ -32,11 +28,7 @@ class Operation extends $pb.GeneratedMessage {
     $core.String? id,
     $core.Iterable<$core.String>? usersId,
     $1.Chat? chat,
-    $0.Sex? sex,
-    $core.String? missArea,
-    $core.String? missTime,
-    $core.String? addInf,
-    $core.String? photo,
+    $core.String? searchReqId,
     $0.Status? status,
   }) {
     final _result = create();
@@ -49,20 +41,8 @@ class Operation extends $pb.GeneratedMessage {
     if (chat != null) {
       _result.chat = chat;
     }
-    if (sex != null) {
-      _result.sex = sex;
-    }
-    if (missArea != null) {
-      _result.missArea = missArea;
-    }
-    if (missTime != null) {
-      _result.missTime = missTime;
-    }
-    if (addInf != null) {
-      _result.addInf = addInf;
-    }
-    if (photo != null) {
-      _result.photo = photo;
+    if (searchReqId != null) {
+      _result.searchReqId = searchReqId;
     }
     if (status != null) {
       _result.status = status;
@@ -114,57 +94,21 @@ class Operation extends $pb.GeneratedMessage {
   $1.Chat ensureChat() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $0.Sex get sex => $_getN(3);
+  $core.String get searchReqId => $_getSZ(3);
   @$pb.TagNumber(4)
-  set sex($0.Sex v) { setField(4, v); }
+  set searchReqId($core.String v) { $_setString(3, v); }
   @$pb.TagNumber(4)
-  $core.bool hasSex() => $_has(3);
+  $core.bool hasSearchReqId() => $_has(3);
   @$pb.TagNumber(4)
-  void clearSex() => clearField(4);
+  void clearSearchReqId() => clearField(4);
 
   @$pb.TagNumber(5)
-  $core.String get missArea => $_getSZ(4);
+  $0.Status get status => $_getN(4);
   @$pb.TagNumber(5)
-  set missArea($core.String v) { $_setString(4, v); }
+  set status($0.Status v) { setField(5, v); }
   @$pb.TagNumber(5)
-  $core.bool hasMissArea() => $_has(4);
+  $core.bool hasStatus() => $_has(4);
   @$pb.TagNumber(5)
-  void clearMissArea() => clearField(5);
-
-  @$pb.TagNumber(6)
-  $core.String get missTime => $_getSZ(5);
-  @$pb.TagNumber(6)
-  set missTime($core.String v) { $_setString(5, v); }
-  @$pb.TagNumber(6)
-  $core.bool hasMissTime() => $_has(5);
-  @$pb.TagNumber(6)
-  void clearMissTime() => clearField(6);
-
-  @$pb.TagNumber(7)
-  $core.String get addInf => $_getSZ(6);
-  @$pb.TagNumber(7)
-  set addInf($core.String v) { $_setString(6, v); }
-  @$pb.TagNumber(7)
-  $core.bool hasAddInf() => $_has(6);
-  @$pb.TagNumber(7)
-  void clearAddInf() => clearField(7);
-
-  @$pb.TagNumber(8)
-  $core.String get photo => $_getSZ(7);
-  @$pb.TagNumber(8)
-  set photo($core.String v) { $_setString(7, v); }
-  @$pb.TagNumber(8)
-  $core.bool hasPhoto() => $_has(7);
-  @$pb.TagNumber(8)
-  void clearPhoto() => clearField(8);
-
-  @$pb.TagNumber(9)
-  $0.Status get status => $_getN(8);
-  @$pb.TagNumber(9)
-  set status($0.Status v) { setField(9, v); }
-  @$pb.TagNumber(9)
-  $core.bool hasStatus() => $_has(8);
-  @$pb.TagNumber(9)
-  void clearStatus() => clearField(9);
+  void clearStatus() => clearField(5);
 }
 

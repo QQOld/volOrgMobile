@@ -67,8 +67,8 @@ class ImagePicker extends ConsumerWidget {
                         progressIndicatorBuilder: (context, url, downloadProgress) =>
                         const CircularProgressIndicator(),
                         errorWidget: (context, url, error) {
-                          return Image.asset(
-                            "img/placeholder.jpg",
+                          return Image.network(
+                            "assets/img/placeholder.jpg",
                             fit: BoxFit.cover,
                           );
                         }),
@@ -84,7 +84,7 @@ class ImagePicker extends ConsumerWidget {
                       borderRadius: borderRadius,
                     ),
                     child: Image.asset(
-                      "img/placeholder.jpg",
+                      "assets/img/placeholder.jpg",
                       fit: BoxFit.cover,
                     ),
                   ),

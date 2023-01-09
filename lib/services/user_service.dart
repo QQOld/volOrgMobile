@@ -3,7 +3,10 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:protobuf/protobuf.dart';
+import 'package:vol_org/generated/operation.pb.dart';
 
 import '../generated/app_user.pb.dart';
 import '../generated/search_request.pb.dart';
@@ -27,6 +30,15 @@ class UserService {
             SearchRequest.create()..mergeFromProto3Json(snapshot.data()),
         toFirestore: (SearchRequest req, _) =>
             jsonDecode(jsonEncode(req.toProto3Json())),
+      );
+
+  final operations = FirebaseFirestore.instance
+      .collection("operations")
+      .withConverter<Operation>(
+        fromFirestore: (snapshot, _) =>
+            Operation.create()..mergeFromProto3Json(snapshot.data()),
+        toFirestore: (Operation op, _) =>
+            jsonDecode(jsonEncode(op.toProto3Json())),
       );
 
   Future<void> uploadImage(Uint8List bytes, String path) async {
@@ -101,10 +113,23 @@ class UserService {
   }
 
   /// Заявки на поиск
-  Future<bool> addOrUpdateSearchReq(
-      String userId, SearchRequest searchReq) async {
-    DocumentReference searchRef = searchRequests.doc(searchReq.id.isEmpty ? null : searchReq.id);
-    final photoRef = storageRef.child("searchReqs/${searchReq.id}");
+
+  Future<SearchRequest?> getSearchReq(String id) async {
+    final searchReqRef = searchRequests.doc(id);
+    final docSnap = await searchReqRef.get();
+    final searchReq = docSnap.data();
+    return searchReq;
+  }
+
+  Stream<QuerySnapshot<SearchRequest>> get getPendingSearchReqs =>
+      searchRequests.where("status", isEqualTo: Status.PENDING.name).snapshots();
+
+  Future<bool> addOrUpdateSearchReq(SearchRequest searchReq) async {
+    DocumentReference searchRef =
+        searchRequests.doc(searchReq.id.isEmpty ? null : searchReq.id);
+    searchReq = searchReq.rebuild((p0) {
+      p0.id = searchRef.id;
+    });
 
     try {
       await searchRef.set(searchReq);
@@ -114,4 +139,45 @@ class UserService {
     }
     return false;
   }
+
+  Future<bool> acceptSearchReq(SearchRequest searchReq) async {
+    DocumentReference searchReqRef = searchRequests.doc(searchReq.id);
+    try {
+      await searchReqRef.update({
+        'status': Status.ACCEPTED.name,
+      });
+
+      DocumentReference operationRef = operations.doc(searchReq.id);
+      await operationRef.set(
+        Operation(
+          id: searchReq.id,
+          usersId: [FirebaseAuth.instance.currentUser?.uid ?? ""],
+          searchReqId: searchReq.id,
+          status: Status.PENDING,
+        ),
+      );
+
+      return true;
+    } catch (e, s) {
+      log(e.toString());
+      log(s.toString());
+    }
+    return false;
+  }
+
+  Future<bool> declineSearchReq(SearchRequest searchReq) async {
+    DocumentReference searchReqRef = searchRequests.doc(searchReq.id);
+    try {
+      await searchReqRef.delete();
+      return true;
+    } catch (e) {
+      log(e.toString());
+    }
+    return false;
+  }
+
+  /// Операции
+
+  Stream<QuerySnapshot<Operation>> get getPendingOperations =>
+      operations.where("status", isEqualTo: Status.PENDING.name).snapshots();
 }

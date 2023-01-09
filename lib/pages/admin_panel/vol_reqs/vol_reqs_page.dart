@@ -11,10 +11,10 @@ class VolReqsPage extends ConsumerStatefulWidget {
   }) : super(key: key);
 
   @override
-  ConsumerState createState() => _AdminPanelPageState();
+  ConsumerState createState() => _VolReqsPageState();
 }
 
-class _AdminPanelPageState extends ConsumerState<VolReqsPage> {
+class _VolReqsPageState extends ConsumerState<VolReqsPage> {
   @override
   Widget build(BuildContext context) {
     final users = ref.watch(allUsersProvider);
